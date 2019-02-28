@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+</head>
+
+<style>
+  .navbar-light {
+    text-align: left;
+    color: white;
+    font-family: serif;
+    font-size: 1.5em;
+    background-color: rgba(219, 63, 63, 0.301);
+    width: 25%;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  a:link,
+  a:visited,
+  a:hover,
+  a:active {
+    text-decoration: none;
+    color: rgb(223, 223, 220);
+  }
+
+  #buttonsAdded button {
+    margin: 10px;
+  }
+
+  body {
+    background-color: rgb(255, 145, 0);
+  }
+
+  .btn {
+    background-color: rgb(255, 230, 0);
+    color: black;
+  }
+
+  #pictures {
+    margin-top: 50px;
+  }
+
+  #addCity {
+    font-weight: bold;
+  }
+</style>
+
+
+
+<nav class="navbar navbar-light" id="navbar">
+  <a href="https://hmojtahedinia.github.io/Basic-Portfolio/">About</a>
+  <a href="https://hmojtahedinia.github.io/Basic-Portfolio/portfolio.html">Portfolio</a>
+  <a href="https://hmojtahedinia.github.io/Basic-Portfolio/contact.html">Contact</a>
+</nav>
+
+
+
+
+<body>
+
+
+  <div class="container">
+    <div class="row">
+      <div class="col" id="buttonsAdded">
+        <button class="btn btn-primary" type="submit" id="stockholm" value="Stockholm">Stockholm</button>
+        <button class="btn btn-primary" type="submit" id="paris" value="paris">Paris</button>
+        <button class="btn btn-primary" type="submit" id="london" value="London">London</button>
+        <button class="btn btn-primary" type="submit" id="madrid" value="Madrid">Madrid</button>
+        <button class="btn btn-primary" type="submit" id="munich" value="Munich">Munich</button>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col">
+      </div>
+      <div class="col">
+        <label id="addCity">
+          Add a city
+        </label>
+        <p>
+          <input id="searchItem" type="text">
+        </p>
+        <button type="submit" id="submit" value="">
+          Submit
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col" id="pictures">
+      </div>
+    </div>
+  </div>
+
+
+
+  <script>
+    $("#submit").click(function () {
+      var submitValue = $("#searchItem").val().trim();
+      $("#buttonsAdded").append("<button>" + submitValue + "</button>");
+      $("button").not(".btn").attr("type", "submit");
+      $("button").not(".btn").attr("value", submitValue);
+      $("button").not(".btn").attr("id", submitValue);
+      $("button").not(".btn").attr("class", "btn btn-primary");
+
+
+
+      $(".btn-primary").click(function () {
+        let value = $(this).attr("id");
+        console.log(value);
+        let apiKey = "sre3RavLD1B24q8kaxOxlfZV3FooRbgD";
+        let hyperLink = "http://api.giphy.com/v1/gifs/search?q=" + value + "&api_key=" + apiKey + "&limit=5";
+
+        $.ajax({
+          url: hyperLink
+        }).then(function (response) {
+          //console.log(response);
+          //console.log(response.data[0].images.original.url);
+
+          for (let i = response.data.length; i--;) {
+            let idNumber = "picture" + i;
+            console.log(idNumber);
+
+            let imageTag = $('<img class="picturesClass" >');
+            imageTag.attr("id", idNumber);
+            imageTag.attr('src', response.data[i].images.original.url);
+            imageTag.attr('data-state', 'animate');
+            $("#pictures").prepend(imageTag);
+
+          }
+          console.log($('#picture0').attr("data-state"));
+
+          $(".col img").click(function () {
+            let state = $(this).attr("data-state");
+            let index = $(this).index();
+            console.log(index);
+            if (state == "animate") {
+              document.getElementsByTagName("img")[index].setAttribute("data-state", "static");
+              document.getElementsByTagName("img")[index].setAttribute("src", response.data[index].images.original_still.url);
+            } else {
+              document.getElementsByTagName("img")[index].setAttribute("data-state", "animate");
+              document.getElementsByTagName("img")[index].setAttribute("src", response.data[index].images.original.url);
+            }
+          })
+
+        })
+
+
+
+
+
+      })
+    })
+
+
+
+
+
+
+
+
+
+
+
+  </script>
+
+
+</body>
+
+</html>
