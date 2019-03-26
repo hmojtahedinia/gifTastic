@@ -118,13 +118,13 @@
         let value = $(this).attr("id");
         console.log(value);
         let apiKey = "sre3RavLD1B24q8kaxOxlfZV3FooRbgD";
-        let hyperLink = "http://api.giphy.com/v1/gifs/search?q=" + value + "&api_key=" + apiKey + "&limit=5";
+        let hyperLink = "https://api.giphy.com/v1/gifs/search?q=" + value + "&api_key=" + apiKey + "&limit=5";
 
         $.ajax({
           url: hyperLink
         }).then(function (response) {
-          //console.log(response);
-          //console.log(response.data[0].images.original.url);
+          console.log(response);
+          console.log(response.data[0].images.original.url);
 
           for (let i = response.data.length; i--;) {
             let idNumber = "picture" + i;
